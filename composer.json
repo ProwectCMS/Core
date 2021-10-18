@@ -1,0 +1,36 @@
+{
+    "name": "prowectcms/core",
+    "description": "Powerful framework and CMS for rapid development based on Laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alina Kessler",
+            "email": "alina.kessler@prowect.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ProwectCMS\\Core\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+          "ProwectCMS\\Core\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "illuminate/support": "^8.64",
+        "spatie/laravel-settings": "^2.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "orchestra/testbench": "^6.21"
+    },
+    "extra": {
+      "laravel": {
+          "providers": [
+              "ProwectCMS\\Core\\ProwectCmsServiceProvider"
+          ]
+      }
+  }
+}
