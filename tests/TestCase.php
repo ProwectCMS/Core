@@ -2,8 +2,9 @@
 
 namespace ProwectCMS\Core\Tests;
 
-use ProwectCMS\Core\ProwectCmsServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use ProwectCMS\Core\ProwectCmsServiceProvider;
+use Spatie\LaravelSettings\LaravelSettingsServiceProvider;
 
 class TestCase extends BaseTestCase
 {
@@ -15,6 +16,7 @@ class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
+            LaravelSettingsServiceProvider::class,
             ProwectCmsServiceProvider::class,
         ];
     }
