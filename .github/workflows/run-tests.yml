@@ -6,6 +6,18 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
 
+    services:
+      mysql:
+        image: mysql
+        env:
+          MYSQL_DATABASE: prowectcms
+          MYSQL_USER: prowectcms
+          MYSQL_PASSWORD: prowectcms
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     strategy:
       fail-fast: true
 
@@ -37,3 +49,9 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/phpunit
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: ${{ job.services.mysql.ports['3306'] }}
+          DB_DATABASE: prowectcms
+          DB_USERNAMe: prowectcms
+          DB_PASSWORD: prowectcms

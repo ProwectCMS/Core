@@ -2,6 +2,7 @@
 
 namespace ProwectCMS\Core;
 
+use Composer\InstalledVersions;
 use Illuminate\Support\ServiceProvider;
 
 class ProwectCmsServiceProvider extends ServiceProvider
@@ -14,10 +15,15 @@ class ProwectCmsServiceProvider extends ServiceProvider
     // const ROUTES_WEB_PATH = '/../routes/web.php';
     const ROUTES_API_PATH = '/../routes/api.php';
 
-    // const MIGRATIONS_PATH = '/../database/migrations';
+    const MIGRATIONS_PATH = '/../database/migrations';
+    
     // const TRANSLATIONS_PATH = '/../resources/lang';
     // const VIEWS_PATH = '/../resources/views';
     // const PUBLIC_PATH = '/../public';
+    
+    const PACKAGE_SETTINGS_MIGRATIONS_PATH = '/../database/settings';
+    const PACKAGE_SETTINGS_CONFIG_PATH = '/../config/settings.php';
+    const PACKAGE_SETTINGS_CONFIG_NAME = 'settings';
 
     public function boot()
     {
@@ -35,7 +41,8 @@ class ProwectCmsServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . static::ROUTES_API_PATH);
 
         // Load migrations
-        // $this->loadMigrationsFrom(__DIR__ . static::MIGRATIONS_PATH);
+        $this->loadMigrationsFrom(__DIR__ . static::MIGRATIONS_PATH);
+        $this->loadMigrationsFrom(__DIR__ . static::PACKAGE_SETTINGS_MIGRATIONS_PATH);
 
         // Load translations
         // $this->loadTranslationsFrom(__DIR__ . static::TRANSLATIONS_PATH, static::PACKAGE_PREFIX);
@@ -55,10 +62,12 @@ class ProwectCmsServiceProvider extends ServiceProvider
         //         NetworkCommand::class,
         //     ]);
         // }
+        
     }
 
     public function register()
     {
         // $this->mergeConfigFrom(__DIR__ . static::CONFIG_PATH, static::CONFIG_NAME);
+        $this->mergeConfigFrom(__DIR__ . static::PACKAGE_SETTINGS_CONFIG_PATH, static::PACKAGE_SETTINGS_CONFIG_NAME);        
     }
 }
