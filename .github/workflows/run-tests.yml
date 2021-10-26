@@ -47,9 +47,6 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --no-suggest
 
-      - name: Migrate database
-        run: php artisan migrate
-
       - name: Execute tests
         run: vendor/bin/phpunit
         env:
