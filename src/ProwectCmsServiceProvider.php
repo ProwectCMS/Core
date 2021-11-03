@@ -62,7 +62,9 @@ class ProwectCmsServiceProvider extends ServiceProvider
         //         NetworkCommand::class,
         //     ]);
         // }
-        
+
+        // register Projectors within a service provider (instead of settings)
+        // Projectionist::addProjector(TransactionCountProjector::class);        
     }
 
     public function register()
