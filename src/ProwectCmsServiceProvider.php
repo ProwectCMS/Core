@@ -25,6 +25,9 @@ class ProwectCmsServiceProvider extends ServiceProvider
     const PACKAGE_SETTINGS_CONFIG_PATH = '/../config/settings.php';
     const PACKAGE_SETTINGS_CONFIG_NAME = 'settings';
 
+    const PACKAGE_EVENT_SOURCING_CONFIG_PATH = '/../config/event-sourcing.php';
+    const PACKAGE_EVENT_SOURCING_CONFIG_NAME = 'event-sourcing';
+
     public function boot()
     {
         // $this->publishes([
@@ -71,5 +74,6 @@ class ProwectCmsServiceProvider extends ServiceProvider
     {
         // $this->mergeConfigFrom(__DIR__ . static::CONFIG_PATH, static::CONFIG_NAME);
         $this->mergeConfigFrom(__DIR__ . static::PACKAGE_SETTINGS_CONFIG_PATH, static::PACKAGE_SETTINGS_CONFIG_NAME);        
+        $this->mergeConfigFrom(__DIR__ . static::PACKAGE_EVENT_SOURCING_CONFIG_PATH, static::PACKAGE_EVENT_SOURCING_CONFIG_NAME);
     }
 }
