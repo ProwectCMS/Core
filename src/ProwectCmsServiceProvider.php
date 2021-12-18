@@ -27,6 +27,9 @@ class ProwectCmsServiceProvider extends ServiceProvider
     const PACKAGE_SETTINGS_CONFIG_PATH = '/../config/settings.php';
     const PACKAGE_SETTINGS_CONFIG_NAME = 'settings';
 
+    const PACKAGE_EVENT_SOURCING_CONFIG_PATH = '/../config/event-sourcing.php';
+    const PACKAGE_EVENT_SOURCING_CONFIG_NAME = 'event-sourcing';
+
     public function boot()
     {
         if ($this->app->runningInConsole()) {
@@ -69,12 +72,15 @@ class ProwectCmsServiceProvider extends ServiceProvider
         //         NetworkCommand::class,
         //     ]);
         // }
-        
+
+        // register Projectors within a service provider (instead of settings)
+        // Projectionist::addProjector(TransactionCountProjector::class);        
     }
 
     public function register()
     {
         // $this->mergeConfigFrom(__DIR__ . static::CONFIG_PATH, static::CONFIG_NAME);
         $this->mergeConfigFrom(__DIR__ . static::PACKAGE_SETTINGS_CONFIG_PATH, static::PACKAGE_SETTINGS_CONFIG_NAME);        
+        $this->mergeConfigFrom(__DIR__ . static::PACKAGE_EVENT_SOURCING_CONFIG_PATH, static::PACKAGE_EVENT_SOURCING_CONFIG_NAME);
     }
 }
