@@ -60,6 +60,7 @@ jobs:
 
   coverage:
     runs-on: ubuntu-latest
+    environment: testing
 
     steps:
     - uses: actions/checkout@v1
