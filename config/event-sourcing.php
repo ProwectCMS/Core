@@ -4,7 +4,6 @@ $defaultSettingsPath = Composer\InstalledVersions::getInstallPath('spatie/larave
 $defaultSettings = include($defaultSettingsPath);
 
 return array_merge($defaultSettings ,[
-
     /*
      * Projectors are classes that build up projections. You can create them by performing
      * `php artisan event-sourcing:create-projector`. When not using auto-discovery,

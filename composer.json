@@ -30,7 +30,9 @@
     "extra": {
       "laravel": {
           "providers": [
-              "ProwectCMS\\Core\\ProwectCmsServiceProvider"
+              "ProwectCMS\\Core\\ProwectCmsServiceProvider",
+              "ProwectCMS\\Core\\ProwectCmsAuthServiceProvider",
+              "ProwectCMS\\Core\\ProwectCmsEventSourcingServiceProvider"
           ]
       }
   }

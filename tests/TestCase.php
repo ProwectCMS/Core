@@ -3,6 +3,8 @@
 namespace ProwectCMS\Core\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use ProwectCMS\Core\ProwectCmsAuthServiceProvider;
+use ProwectCMS\Core\ProwectCmsEventSourcingServiceProvider;
 use ProwectCMS\Core\ProwectCmsServiceProvider;
 use Spatie\EventSourcing\EventSourcingServiceProvider;
 use Spatie\LaravelSettings\LaravelSettingsServiceProvider;
@@ -20,6 +22,8 @@ class TestCase extends BaseTestCase
             LaravelSettingsServiceProvider::class,
             EventSourcingServiceProvider::class,
             ProwectCmsServiceProvider::class,
+            ProwectCmsAuthServiceProvider::class,
+            ProwectCmsEventSourcingServiceProvider::class
         ];
     }
 
