@@ -58,10 +58,25 @@ jobs:
           DB_PORT: 3306
         run: vendor/bin/phpunit --coverage-clover ./coverage-clover.xml
 
-      - name: CodeClimate
-        uses: paambaati/codeclimate-action@v2.2.4
-        env:
-          CC_TEST_REPORTER_ID: $CODECLIMATE_TEST_REPORTER_ID
-        with:
-          coverageLocations: |
-            ${{github.workspace}}/coverage-clover.xml:clover
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.0
+        coverage: pcov
+    
+    - name: Install dependencies
+      run: composer install --no-interaction --no-suggest
+  
+    - name: Test & publish code coverage
+      uses: paambaati/codeclimate-action@v2.3.0
+      env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
+      with:
+        coverageCommand: vendor/bin/phpunit --coverage-clover=clover.xml
+        debug: true
