@@ -56,4 +56,12 @@ jobs:
           DB_USERNAME: prowectcms
           DB_PASSWORD: prowectcms
           DB_PORT: 3306
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --coverage-clover ./coverage-clover.xml
+
+      - name: CodeClimate
+        uses: paambaati/codeclimate-action@v2.2.4
+        env:
+          CC_TEST_REPORTER_ID: $CODECLIMATE_TEST_REPORTER_ID
+        with:
+          coverageLocations: |
+            ${{github.workspace}}/coverage-clover.xml:clover
