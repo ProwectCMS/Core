@@ -15,6 +15,7 @@ class CreateAccountCredentialsTable extends Migration
             $table->string('type');
             $table->string('username')->nullable()->unique();
             $table->string('password')->nullable();
+            $table->rememberToken();
             $table->json('meta')->nullable();
 
             $table->timestamps();
@@ -24,5 +25,10 @@ class CreateAccountCredentialsTable extends Migration
             $table->index(['type']);
             $table->index(['type', 'username']);
         });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('account_credentials');
     }
 }

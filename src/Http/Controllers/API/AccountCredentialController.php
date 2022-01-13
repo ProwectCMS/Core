@@ -24,11 +24,12 @@ class AccountCredentialController extends Controller
 
         // TODO: $this->authorize('create', AccountCredential::class);
 
-        $accountCredentialTypeClass = $this->getAccountCredentialTypeClass($type);
+        $accountCredentialManager = $this->getAccountCredential($type)->getManager();
 
-        $this->validate($request, $accountCredentialTypeClass::getCreateValidationRules());
 
-        $accountCredential = $accountCredentialTypeClass::handleCreateRequest($account, $request);
+        $this->validate($request, $accountCredentialManager->getCreateValidationRules());
+
+        $accountCredential = $accountCredentialManager->handleCreateRequest($account, $request);
 
         return response()->json([
             'status' => 'ok',
@@ -47,20 +48,19 @@ class AccountCredentialController extends Controller
         
         // TODO: Validate Account Credential -> Account
 
-        $accountCredentialTypeClass = $this->getAccountCredentialTypeClass($type);
+        $accountCredential = $this->getAccountCredential($type, $credential);
+        $accountCredentialManager = $accountCredential->getManager();
 
-        $accountCredential = new $accountCredentialTypeClass($credential);
+        $this->validate($request, $accountCredentialManager->getUpdateValidationRules());
 
-        $this->validate($request, $accountCredential->getUpdateValidationRules());
-
-        $accountCredential->handleUpdateRequest($request);
+        $accountCredentialManager->handleUpdateRequest($request);
 
         return response()->json([
             'status' => 'ok',
             'key' => 'account.credential.update.success',
             'message' => 'Account credentials have successfully been updated.',
 
-            'account_credentials' => $accountCredential->toArray()
+            'account_credentials' => $credential->toArray()
         ]);
     }
 
@@ -77,11 +77,8 @@ class AccountCredentialController extends Controller
         
         // TODO: Validate AccountCredential -> Account
         
-
-        $accountCredentialTypeClass = $this->getAccountCredentialTypeClass($type);
-        
-        $aggregate = AccountCredentialAggregate::retrieve($credential->id);
-        $aggregate->delete($credential)->persist();
+        $accountCredentialManager = $this->getAccountCredential($type, $credential)->getManager();
+        $accountCredentialManager->handleDeleteRequest($request);
 
         return response()->json([
             'status' => 'ok',
@@ -103,8 +100,8 @@ class AccountCredentialController extends Controller
         return $validator->validate();
     }
 
-    protected function getAccountCredentialTypeClass($type)
+    protected function getAccountCredential($type, AccountCredential $credential = null)
     {
-        return App::make(AccountCredentialFactory::class)->getClassForType(strtoupper($type));
+        return App::make(AccountCredentialFactory::class)->create(strtoupper($type), $credential);
     }
 }

@@ -372,7 +372,7 @@
                                 <a href="#" class="nav-author__signout" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     <span data-feather="log-out"></span> Sign Out</a>
-                                <form id="logout-form" action="#" method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('prowectcms.admin.logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>

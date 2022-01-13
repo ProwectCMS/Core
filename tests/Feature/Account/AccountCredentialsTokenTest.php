@@ -5,6 +5,7 @@ namespace ProwectCMS\Core\Tests\Feature\Account;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use ProwectCMS\Core\Library\Account\Credentials\Token;
+use ProwectCMS\Core\Library\Account\Managers\TokenManager;
 use ProwectCMS\Core\Models\Account;
 use ProwectCMS\Core\Models\AccountCredential;
 use ProwectCMS\Core\Tests\TestCase;
@@ -21,7 +22,7 @@ class AccountCredentialsTokenTest extends TestCase
 
         $token = 'T3ST';
 
-        $accountCredential = Token::create($account, $token);
+        $accountCredential = TokenManager::create($account, $token);
 
         $this->assertInstanceOf(Token::class, $accountCredential);
         $this->assertEquals('TOKEN', $accountCredential->type);
@@ -37,7 +38,7 @@ class AccountCredentialsTokenTest extends TestCase
             'type' => Account::TYPE_USER
         ]);
 
-        $accountCredential = Token::create($account);
+        $accountCredential = TokenManager::create($account);
 
         $this->assertInstanceOf(Token::class, $accountCredential);
         $this->assertEquals('TOKEN', $accountCredential->type);
@@ -53,8 +54,7 @@ class AccountCredentialsTokenTest extends TestCase
             'type' => Account::TYPE_USER
         ]);
 
-        $accountCredential = AccountCredential::createWithAttributes([
-            'account_id' => $account->id,
+        $accountCredential = AccountCredential::createWithAttributes($account->id, [
             'type' => AccountCredential::TYPE_TOKEN,
             'username' => 'T3ST'
         ]);

@@ -6,14 +6,14 @@ use Ramsey\Uuid\Uuid;
 
 trait HasEventSourcing
 {    
-    protected static $idColumnName = 'id';
-
-    public static function createWithAttributes(array $attributes)
+    public static function createWithAttributes(...$params)
     {
-        $attributes[static::$idColumnName] = (string) Uuid::uuid4();
+        $id = (string) Uuid::uuid4();
 
-        event(new static::$createdEvent($attributes));
+        $aggregate = static::$aggregate::retrieve($id);
+        call_user_func_array([$aggregate, 'create'], $params);
+        $aggregate->persist();
 
-        return static::find($attributes[static::$idColumnName]);
+        return static::find($id);
     }
 }

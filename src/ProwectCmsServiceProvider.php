@@ -3,6 +3,7 @@
 namespace ProwectCMS\Core;
 
 use Composer\InstalledVersions;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\ServiceProvider;
 
 class ProwectCmsServiceProvider extends ServiceProvider
@@ -40,6 +41,9 @@ class ProwectCmsServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . static::PUBLIC_PATH => public_path('vendor/' . static::PACKAGE_PREFIX),
             ], ['prowectcms-assets', 'laravel-assets']);
+
+            $this->registerCommands();
+            $this->registerCronjobs();
         }
         // $this->publishes([
         //     __DIR__ . static::CONFIG_PATH => config_path(static::CONFIG_NAME . '.php')
@@ -82,5 +86,21 @@ class ProwectCmsServiceProvider extends ServiceProvider
         // $this->mergeConfigFrom(__DIR__ . static::CONFIG_PATH, static::CONFIG_NAME);
         $this->mergeConfigFrom(__DIR__ . static::PACKAGE_SETTINGS_CONFIG_PATH, static::PACKAGE_SETTINGS_CONFIG_NAME);        
         $this->mergeConfigFrom(__DIR__ . static::PACKAGE_EVENT_SOURCING_CONFIG_PATH, static::PACKAGE_EVENT_SOURCING_CONFIG_NAME);
+    }
+
+    protected function registerCommands()
+    {
+        $this->commands([
+            Console\Account\CreateAdminAccount::class
+        ]);
+    }
+
+    protected function registerCronjobs()
+    {
+        $this->app->booted(function () {
+            $schedule = $this->app->make(Schedule::class);
+
+            // f.e. $schedule->command('some:command')-> etc.
+        });
     }
 }

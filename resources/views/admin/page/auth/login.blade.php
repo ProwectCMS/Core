@@ -49,14 +49,16 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="edit-profile__body">
-                                                <form method="POST" action="#">
+                                                @include('prowectcms::admin.partial.flash')
+
+                                                <form method="POST" action="{{ route('prowectcms.admin.login.auth') }}">
                                                     @csrf
                                                     <div class="form-group mb-20">
                                                         <label for="username">Username or Email Address</label>
                                                         <input type="email"
                                                                class="form-control @error('email') is-invalid @enderror"
-                                                               id="email" placeholder="Email" name="email"
-                                                               value="admin@gmail.com" required>
+                                                               id="email" placeholder="Email" name="username"
+                                                               value="admin@prowect.com" required>
                                                         @error('email')
                                                         <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -86,7 +88,7 @@
                                                                 <span class="checkbox-text">Keep me logged in</span>
                                                             </label>
                                                         </div>
-                                                        <a href="#">forget password</a>
+                                                        <a href="#">Forgot password</a>
                                                     </div>
                                                     <div
                                                         class="button-group d-flex pt-1 justify-content-md-start justify-content-center">

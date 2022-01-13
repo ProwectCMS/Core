@@ -10,6 +10,13 @@ use Ramsey\Uuid\Uuid;
 
 class AccountController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('auth:prowectcms_api')->except([
+        //     'store'
+        // ]);
+    }
+
     public function index()
     {
         // TODO:
@@ -37,11 +44,6 @@ class AccountController extends Controller
             'meta' => $meta
         ];
 
-        // $uuid = Uuid::uuid4();
-        // $accountAggregate = AccountAggregate::retrieve($uuid);
-        // $accountAggregate->create($attributes)->persist();
-        // $account = Account::find($uuid);
-
         $account = Account::createWithAttributes($attributes);
 
         return response()->json([
@@ -63,8 +65,18 @@ class AccountController extends Controller
         // TODO:
     }
 
-    public function destroy()
-    {
-        // TODO:
+    public function destroy(Account $account)
+    {        
+        $this->authorize('delete', $account);
+
+        AccountAggregate::retrieve($account->id)
+            ->delete()
+            ->persist();
+
+        return response()->json([
+            'status' => 'ok',
+            'key' => 'account.delete.success',
+            'message' => 'Account has successfully been deleted'
+        ]);
     }
 }

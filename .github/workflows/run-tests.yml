@@ -23,13 +23,11 @@ jobs:
 
       matrix:
         os: [ ubuntu-latest ]
-        php: [7.4, 8.0]
-        laravel: [ 7.*, 8.* ]
+        php: [8.0, 8.1]
+        laravel: [ 8.* ]
         mysql: [5.7, 8.0]
         dependency-version: [ prefer-stable ]
         include:
-          - laravel: 7.*
-            testbench: 5.*
           - laravel: 8.*
             testbench: 6.*
 
@@ -68,7 +66,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 8.0
+        php-version: ${{ matrix.php }}
         coverage: pcov
     
     - name: Install dependencies

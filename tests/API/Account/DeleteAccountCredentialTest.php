@@ -18,8 +18,7 @@ class DeleteAccountCredentialTest extends TestCase
             'type' => Account::TYPE_USER
         ]);
 
-        $accountCredential = AccountCredential::createWithAttributes([
-            'account_id' => $account->id,
+        $accountCredential = AccountCredential::createWithAttributes($account->id, [
             'type' => AccountCredential::TYPE_TOKEN,
             'username' => 'T3ST'
         ]);

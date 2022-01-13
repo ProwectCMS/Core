@@ -7,7 +7,7 @@ use Spatie\EventSourcing\Facades\Projectionist;
 
 class ProwectCmsEventSourcingServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function boot()
     {
         Projectionist::addProjectors([
             Projectors\Account\AccountProjector::class,

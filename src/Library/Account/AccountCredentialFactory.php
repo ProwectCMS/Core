@@ -3,6 +3,7 @@
 namespace ProwectCMS\Core\Library\Account;
 
 use ProwectCMS\Core\Library\Account\Credentials\ICredential;
+use ProwectCMS\Core\Models\AccountCredential;
 
 class AccountCredentialFactory
 {
@@ -32,5 +33,16 @@ class AccountCredentialFactory
     public function getAvailableNames()
     {
         return array_keys($this->availableAccountCredentials);
+    }
+
+    public function create($type, ?AccountCredential $accountCredential = null)
+    {
+        $class = $this->getClassForType($type);
+
+        if (!is_null($accountCredential)) {
+            return new $class($accountCredential);
+        }
+
+        return new $class;
     }
 }

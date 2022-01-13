@@ -2,7 +2,7 @@
 
 namespace ProwectCMS\Core\Models;
 
-use ProwectCMS\Core\Events\Account\AccountCredentialCreated;
+use ProwectCMS\Core\Aggregates\Account\AccountCredentialAggregate;
 
 class AccountCredential extends Model
 {
@@ -18,7 +18,7 @@ class AccountCredential extends Model
 
     protected $table = 'account_credentials';
 
-    protected static $createdEvent = AccountCredentialCreated::class;
+    protected static $aggregate = AccountCredentialAggregate::class;
 
     protected $fillable = [
         'id', 'type', 'account_id', 'username', 'password', 'meta'
@@ -40,5 +40,10 @@ class AccountCredential extends Model
             static::TYPE_USERNAME,
             static::TYPE_API
         ];
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
     }
 }

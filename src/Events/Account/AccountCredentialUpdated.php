@@ -6,22 +6,8 @@ use ProwectCMS\Core\Models\AccountCredential;
 
 class AccountCredentialUpdated extends Event
 {
-    protected AccountCredential $accountCredential;
-    protected array $updatedAttributes;
-
-    public function __construct(AccountCredential $accountCredential, array $updatedAttributes)
+    public function __construct(public array $attributes)
     {
-        $this->accountCredential = $accountCredential;
-        $this->updatedAttributes = $updatedAttributes;
-    }
 
-    public function getAccountCredential() : AccountCredential
-    {
-        return $this->accountCredential;
-    }
-
-    public function getUpdatedAttributes() : array
-    {
-        return $this->updatedAttributes;
     }
 }
