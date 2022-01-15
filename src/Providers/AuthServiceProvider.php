@@ -1,6 +1,6 @@
 <?php
 
-namespace ProwectCMS\Core;
+namespace ProwectCMS\Core\Providers;
 
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -8,20 +8,25 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use ProwectCMS\Core\Library\Account\AccountCredentialFactory;
 use ProwectCMS\Core\Library\Account\Auth\AccountProvider;
+use ProwectCMS\Core\Library\Account\Credentials\Email;
+use ProwectCMS\Core\Library\Account\Credentials\Token;
+use ProwectCMS\Core\Library\Account\Credentials\Username;
 use ProwectCMS\Core\Models\Account;
 use ProwectCMS\Core\Models\AccountCredential;
+use ProwectCMS\Core\Policies\AccountCredentialPolicy;
+use ProwectCMS\Core\Policies\AccountPolicy;
 
-class ProwectCmsAuthServiceProvider extends ServiceProvider
+class AuthServiceProvider extends ServiceProvider
 {
     protected $policies = [
-        Models\Account::class => Policies\AccountPolicy::class,
-        Models\AccountCredential::class => Policies\AccountCredentialPolicy::class,
+        Account::class => AccountPolicy::class,
+        AccountCredential::class => AccountCredentialPolicy::class,
     ];
 
     protected $accountCredentialTypes = [
-        Library\Account\Credentials\Token::class,
-        Library\Account\Credentials\Username::class,
-        Library\Account\Credentials\Email::class
+        Token::class,
+        Username::class,
+        Email::class
     ];
 
     protected function getAccountCredentialTypes()
@@ -54,7 +59,12 @@ class ProwectCmsAuthServiceProvider extends ServiceProvider
     {
         Config::set('auth.guards.prowectcms', [
             'driver' => 'session',
-            'provider' => 'prowectcms',
+            'provider' => 'prowectcms'
+        ]);
+
+        Config::set('auth.guards.prowectcms_api', [
+            'driver' => 'sanctum',
+            'provider' => 'prowectcms'
         ]);
 
         Config::set('auth.providers.prowectcms', [

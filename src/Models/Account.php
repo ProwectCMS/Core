@@ -4,12 +4,13 @@ namespace ProwectCMS\Core\Models;
 
 use Illuminate\Auth\Authenticatable as Auth;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Sanctum\HasApiTokens;
 use ProwectCMS\Core\Aggregates\Account\AccountAggregate;
-use ProwectCMS\Core\Models\AccountCredential;
 
 class Account extends Model implements Authenticatable
 {
-    use Auth;
+    use Auth, HasApiTokens, SoftDeletes;
 
     const TYPE_GUEST = 'GUEST';
     const TYPE_USER = 'USER';

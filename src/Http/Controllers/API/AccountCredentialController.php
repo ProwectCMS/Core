@@ -22,7 +22,8 @@ class AccountCredentialController extends Controller
     {
         $this->validateType($type);
 
-        // TODO: $this->authorize('create', AccountCredential::class);
+        $this->authorize('store', AccountCredential::class);
+        $this->authorize('storeCredential', $account);
 
         $accountCredentialManager = $this->getAccountCredential($type)->getManager();
 
@@ -44,8 +45,7 @@ class AccountCredentialController extends Controller
     {
         $this->validateType($type);
         
-        // TODO: $this->authorize('update', $credential);
-        
+        $this->authorize('update', $credential);
         // TODO: Validate Account Credential -> Account
 
         $accountCredential = $this->getAccountCredential($type, $credential);
@@ -73,7 +73,7 @@ class AccountCredentialController extends Controller
     {
         $this->validateType($type);
 
-        // TODO: $this->authorize('delete', $credential);
+        $this->authorize('delete', $credential);
         
         // TODO: Validate AccountCredential -> Account
         

@@ -8,11 +8,11 @@ use ProwectCMS\Core\Models\Account;
 
 interface IManager
 {
-    public function getCreateValidationRules() : array;
+    public function getCreateValidationRules(): array;
 
-    public function getUpdateValidationRules() : array;
+    public function getUpdateValidationRules(): array;
 
-    public function handleCreateRequest(Account $account, Request $request) : ICredential;
+    public function handleCreateRequest(Account $account, Request $request): ICredential;
 
     public function handleUpdateRequest(Request $request);
 

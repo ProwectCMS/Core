@@ -3,9 +3,10 @@
 namespace ProwectCMS\Core\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use ProwectCMS\Core\ProwectCmsAuthServiceProvider;
-use ProwectCMS\Core\ProwectCmsEventSourcingServiceProvider;
-use ProwectCMS\Core\ProwectCmsServiceProvider;
+use ProwectCMS\Core\Providers\AuthServiceProvider;
+use ProwectCMS\Core\Providers\SanctumServiceProvider;
+use ProwectCMS\Core\Providers\ServiceProvider;
+use ProwectCMS\Core\Providers\EventSourcingServiceProvider as ProwectCmsEventSourcingServiceProvider;
 use Spatie\EventSourcing\EventSourcingServiceProvider;
 use Spatie\LaravelSettings\LaravelSettingsServiceProvider;
 
@@ -19,11 +20,15 @@ class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
+            // Other packages
             LaravelSettingsServiceProvider::class,
             EventSourcingServiceProvider::class,
-            ProwectCmsServiceProvider::class,
-            ProwectCmsAuthServiceProvider::class,
-            ProwectCmsEventSourcingServiceProvider::class
+
+            // ProwectCMS
+            ServiceProvider::class,
+            AuthServiceProvider::class,
+            ProwectCmsEventSourcingServiceProvider::class,
+            SanctumServiceProvider::class,
         ];
     }
 

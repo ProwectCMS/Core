@@ -2,23 +2,44 @@
 
 namespace ProwectCMS\Core\Tests\API\Account;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Sanctum\Sanctum;
 use ProwectCMS\Core\Models\Account;
 use ProwectCMS\Core\Models\AccountCredential;
-use ProwectCMS\Core\Tests\TestCase;
-use Ramsey\Uuid\Uuid;
+use ProwectCMS\Core\Tests\TestCaseWithDatabase;
 
-class CreateAccountCredentialTest extends TestCase
+class CreateAccountCredentialTest extends TestCaseWithDatabase
 {
-    use DatabaseMigrations;
+    public function testCreateAccountCredentialTokenUnauthenticated()
+    {
+        $account = Account::findOrFail('prowectcms-admin-user');
+
+        $response = $this->json('POST', "api/accounts/$account->id/credentials/token" , [
+            'token' => 'T3ST'
+        ]);
+        $response->assertStatus(401);
+    }
+
+    public function testCreateAccountCredentialTokenUnauthorized()
+    {
+        $account = Account::findOrFail('frontend-user');
+
+        Sanctum::actingAs($account, ['*'], 'prowectcms_api');
+
+        $account = Account::findOrFail('prowectcms-admin-user');
+
+        $response = $this->json('POST', "api/accounts/$account->id/credentials/token" , [
+            'token' => 'T3ST'
+        ]);
+        $response->assertStatus(403);
+    }
 
     public function testCreateAccountCredentialTokenSuccess()
     {
-        $account = Account::createWithAttributes([
-            'type' => Account::TYPE_USER
-        ]);
+        $account = Account::findOrFail('prowectcms-admin-user');
 
-        $response = $this->postJson("api/accounts/$account->id/credentials/token" , [
+        Sanctum::actingAs($account, ['*'], 'prowectcms_api');
+
+        $response = $this->json('POST', "api/accounts/$account->id/credentials/token" , [
             'token' => 'T3ST'
         ]);
         $response->assertOk();
@@ -35,11 +56,11 @@ class CreateAccountCredentialTest extends TestCase
 
     public function testCreateAccountCredentialUsernameSuccess()
     {
-        $account = Account::createWithAttributes([
-            'type' => Account::TYPE_USER
-        ]);
+        $account = Account::findOrFail('prowectcms-admin-user');
 
-        $response = $this->postJson("api/accounts/$account->id/credentials/username" , [
+        Sanctum::actingAs($account, ['*'], 'prowectcms_api');
+
+        $response = $this->json('POST', "api/accounts/$account->id/credentials/username" , [
             'username' => 'test',
             'password' => 'test123'
         ]);
@@ -57,11 +78,11 @@ class CreateAccountCredentialTest extends TestCase
 
     public function testCreateAccountCredentialEmailSuccess()
     {
-        $account = Account::createWithAttributes([
-            'type' => Account::TYPE_USER
-        ]);
+        $account = Account::findOrFail('prowectcms-admin-user');
 
-        $response = $this->postJson("api/accounts/$account->id/credentials/email" , [
+        Sanctum::actingAs($account, ['*'], 'prowectcms_api');
+
+        $response = $this->json('POST', "api/accounts/$account->id/credentials/email" , [
             'username' => 'test@prowect.com',
             'password' => 'test123'
         ]);

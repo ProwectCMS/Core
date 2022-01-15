@@ -3,6 +3,8 @@
 namespace ProwectCMS\Core\Projectors\Account;
 
 use ProwectCMS\Core\Events\Account\AccountCreated;
+use ProwectCMS\Core\Events\Account\AccountDeleted;
+use ProwectCMS\Core\Events\Account\AccountUpdated;
 use ProwectCMS\Core\Models\Account;
 use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
 
@@ -16,6 +18,13 @@ class AccountProjector extends Projector
         $account = Account::create($attributes);
     }
 
-    // TODO: onAccountUpdated
-    // TODO: onAccountDeleted
+    public function onAccountUpdated(AccountUpdated $event)
+    {
+        Account::findOrFail($event->aggregateRootUuid())->update($event->attributes);
+    }
+
+    public function onAccountDeleted(AccountDeleted $event)
+    {
+        Account::findOrFail($event->aggregateRootUuid())->delete();
+    }
 }

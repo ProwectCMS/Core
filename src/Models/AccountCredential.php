@@ -2,10 +2,13 @@
 
 namespace ProwectCMS\Core\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use ProwectCMS\Core\Aggregates\Account\AccountCredentialAggregate;
 
 class AccountCredential extends Model
 {
+    use SoftDeletes;
+
     const TYPE_TOKEN = 'TOKEN';
     const TYPE_EMAIL = 'EMAIL';
     const TYPE_USERNAME = 'USERNAME';
@@ -38,7 +41,6 @@ class AccountCredential extends Model
             static::TYPE_TOKEN,
             static::TYPE_EMAIL,
             static::TYPE_USERNAME,
-            static::TYPE_API
         ];
     }
 

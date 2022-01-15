@@ -23,6 +23,7 @@ class AccountCredentialFactory
 
     public function getClassForType($type)
     {
+        $type = strtoupper($type);
         if (!isset($this->availableAccountCredentials[$type])) {
             throw new AccountCredentialNotFoundException("Account Credential Type: $type is not registered or was not found!");
         }
@@ -37,6 +38,7 @@ class AccountCredentialFactory
 
     public function create($type, ?AccountCredential $accountCredential = null)
     {
+        $type = strtoupper($type);
         $class = $this->getClassForType($type);
 
         if (!is_null($accountCredential)) {

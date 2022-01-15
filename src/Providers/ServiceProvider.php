@@ -1,41 +1,44 @@
 <?php
 
-namespace ProwectCMS\Core;
+namespace ProwectCMS\Core\Providers;
 
 use Composer\InstalledVersions;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use ProwectCMS\Core\Console\Account\CreateAdminAccount;
+use ProwectCMS\Core\Models\Account;
 
-class ProwectCmsServiceProvider extends ServiceProvider
+class ServiceProvider extends BaseServiceProvider
 {
     const PACKAGE_PREFIX = 'prowectcms';
 
-    // const CONFIG_PATH = '/../config/prowectcms.php';
+    // const CONFIG_PATH = '/../../config/prowectcms.php';
     // const CONFIG_NAME = 'prowectcms';
 
-    // const ROUTES_WEB_PATH = '/../routes/web.php';
-    const ROUTES_API_PATH = '/../routes/api.php';
-    const ROUTES_ADMIN_PATH = '/../routes/admin.php';
+    // const ROUTES_WEB_PATH = '/..å/../routes/web.php';
+    const ROUTES_API_PATH = '/../../routes/api.php';
+    const ROUTES_ADMIN_PATH = '/../../routes/admin.php';
 
-    const RESOURCES_PATH = '/../resources';
-    const MIGRATIONS_PATH = '/../database/migrations';
+    const RESOURCES_PATH = '/../../resources';
+    const MIGRATIONS_PATH = '/../../database/migrations';
     
     // const TRANSLATIONS_PATH = '/../resources/lang';
-    const VIEWS_PATH = '/../resources/views';
-    const PUBLIC_PATH = '/../public';
+    const VIEWS_PATH = '/../../resources/views';
+    const PUBLIC_PATH = '/../../public';
     
-    const PACKAGE_SETTINGS_MIGRATIONS_PATH = '/../database/settings';
-    const PACKAGE_SETTINGS_CONFIG_PATH = '/../config/settings.php';
+    const PACKAGE_SETTINGS_MIGRATIONS_PATH = '/../../database/settings';
+    const PACKAGE_SETTINGS_CONFIG_PATH = '/../../config/settings.php';
     const PACKAGE_SETTINGS_CONFIG_NAME = 'settings';
 
-    const PACKAGE_EVENT_SOURCING_CONFIG_PATH = '/../config/event-sourcing.php';
+    const PACKAGE_EVENT_SOURCING_CONFIG_PATH = '/../../config/event-sourcing.php';
     const PACKAGE_EVENT_SOURCING_CONFIG_NAME = 'event-sourcing';
 
     public function boot()
     {
         if ($this->app->runningInConsole()) {
              $this->publishes([
-                __DIR__ . static::RESOURCES_PATH . '/assets' => public_path(static::PACKAGE_PREFIX),
+                __DIR__ . static::RESOURCES_PATH => public_path(static::PACKAGE_PREFIX),
             ], 'assets');
 
             $this->publishes([
@@ -78,7 +81,11 @@ class ProwectCmsServiceProvider extends ServiceProvider
         // }
 
         // register Projectors within a service provider (instead of settings)
-        // Projectionist::addProjector(TransactionCountProjector::class);        
+        // Projectionist::addProjector(TransactionCountProjector::class);
+
+        Relation::enforceMorphMap([
+            'account' => Account::class,
+        ]);
     }
 
     public function register()
@@ -91,7 +98,7 @@ class ProwectCmsServiceProvider extends ServiceProvider
     protected function registerCommands()
     {
         $this->commands([
-            Console\Account\CreateAdminAccount::class
+            CreateAdminAccount::class
         ]);
     }
 

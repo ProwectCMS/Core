@@ -22,6 +22,7 @@ class AccountProvider extends EloquentUserProvider
 
     protected function getAccountCredential(Authenticatable $user, $type)
     {
+        $type = strtoupper($type);
         $class = $this->accountCredentialFactory->getClassForType($type);
 
         $accountCredential = $user->credentials()->where('type', $type)->first();
@@ -61,7 +62,11 @@ class AccountProvider extends EloquentUserProvider
 
         $accountCredential = $this->getAccountCredential($user, $type);
 
-        return $accountCredential->check($credentials);
+        if ($accountCredential) {
+            return $accountCredential->check($credentials);
+        }
+
+        return false;
     }
 
     public function retrieveByToken($identifier, $token)
