@@ -2,7 +2,7 @@
 
 namespace ProwectCMS\Core\Events\Account;
 
-use Ramsey\Uuid\Uuid;
+use ProwectCMS\Core\Facades\Snowflake;
 
 class AccountCreated extends Event
 {
@@ -10,7 +10,7 @@ class AccountCreated extends Event
     {
         for ($i = 0; $i < count($this->credentials); $i++) {
             if (empty($this->credentials[$i]['id'])) {
-                $this->credentials[$i]['id'] = (string) Uuid::uuid4();
+                $this->credentials[$i]['id'] = Snowflake::next();
             }
         }
     }

@@ -9,8 +9,8 @@ class CreateAccountCredentialsTable extends Migration
     public function up()
     {
         Schema::create('account_credentials', function (Blueprint $table): void {
-            $table->uuid('id')->primary();
-            $table->uuid('account_id');
+            $table->id();
+            $table->unsignedBigInteger('account_id');
 
             $table->string('type');
             $table->string('username')->nullable()->unique();

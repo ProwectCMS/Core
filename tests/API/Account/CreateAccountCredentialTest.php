@@ -11,7 +11,7 @@ class CreateAccountCredentialTest extends TestCaseWithDatabase
 {
     public function testCreateAccountCredentialTokenUnauthenticated()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         $response = $this->json('POST', "api/accounts/$account->id/credentials/token" , [
             'token' => 'T3ST'
@@ -21,11 +21,11 @@ class CreateAccountCredentialTest extends TestCaseWithDatabase
 
     public function testCreateAccountCredentialTokenUnauthorized()
     {
-        $account = Account::findOrFail('frontend-user');
+        $account = Account::findOrFail(20000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         $response = $this->json('POST', "api/accounts/$account->id/credentials/token" , [
             'token' => 'T3ST'
@@ -35,7 +35,7 @@ class CreateAccountCredentialTest extends TestCaseWithDatabase
 
     public function testCreateAccountCredentialTokenSuccess()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
@@ -56,7 +56,7 @@ class CreateAccountCredentialTest extends TestCaseWithDatabase
 
     public function testCreateAccountCredentialUsernameSuccess()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
@@ -78,7 +78,7 @@ class CreateAccountCredentialTest extends TestCaseWithDatabase
 
     public function testCreateAccountCredentialEmailSuccess()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 

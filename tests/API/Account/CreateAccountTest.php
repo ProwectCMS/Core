@@ -6,7 +6,6 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use ProwectCMS\Core\Events\Account\AccountCreated;
 use ProwectCMS\Core\Models\Account;
 use ProwectCMS\Core\Tests\TestCase;
-use Ramsey\Uuid\Uuid;
 
 class CreateAccountTest extends TestCase
 {
@@ -30,11 +29,6 @@ class CreateAccountTest extends TestCase
         $this->assertDatabaseHas('stored_events', [
             'event_class' => AccountCreated::class
         ]);
-
-        $responseData = $response->getData();
-        $account = $responseData->account;
-
-        $this->assertTrue(Uuid::isValid($account->id), "Account-ID: $account->id is not a valid UUID");
     }
 
     public function accountSuccessDataProvider()

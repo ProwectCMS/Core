@@ -12,7 +12,7 @@ class UpdateAccountCredentialTest extends TestCaseWithDatabase
 {
     public function testUpdateAccountCredentialTokenUnauthenticated()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
         $accountCredential = $account->credentials()->where('type', AccountCredential::TYPE_TOKEN)->first();
 
         $payload = [
@@ -25,11 +25,11 @@ class UpdateAccountCredentialTest extends TestCaseWithDatabase
 
     public function testUpdateAccountCredentialTokenUnauthorized()
     {
-        $account = Account::findOrFail('frontend-user');
+        $account = Account::findOrFail(20000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
         $accountCredential = $account->credentials()->where('type', AccountCredential::TYPE_TOKEN)->first();
 
         $payload = [
@@ -42,7 +42,7 @@ class UpdateAccountCredentialTest extends TestCaseWithDatabase
 
     public function testUpdateAccountCredentialTokenSuccess()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
         $accountCredential = $account->credentials()->where('type', AccountCredential::TYPE_TOKEN)->first();
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');

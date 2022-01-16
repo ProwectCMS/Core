@@ -13,27 +13,27 @@ class DeleteAccountTest extends TestCaseWithDatabase
 {
      public function testDeleteAccountUnauthenticated()
      {
-         $response = $this->json('DELETE', 'api/accounts/prowectcms-admin-user');
+         $response = $this->json('DELETE', 'api/accounts/10000');
          $response->assertStatus(401);
      }
 
      public function testDeleteAccountUnauthorized()
      {
-         $account = Account::findOrFail('frontend-user');
+         $account = Account::findOrFail(20000);
 
          Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
-         $response = $this->json('DELETE', 'api/accounts/prowectcms-admin-user');
+         $response = $this->json('DELETE', 'api/accounts/10000');
          $response->assertStatus(403);
      }
 
      public function testDeleteAccountSuccess()
      {
-         $account = Account::findOrFail('prowectcms-admin-user');
+         $account = Account::findOrFail(10000);
 
          Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
-         $response = $this->json('DELETE', 'api/accounts/prowectcms-admin-user');
+         $response = $this->json('DELETE', 'api/accounts/10000');
          $response->assertOk();
          $response->assertJson([
              'status' => 'ok',

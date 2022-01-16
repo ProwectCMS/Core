@@ -10,23 +10,23 @@ class UpdateAccountTest extends TestCaseWithDatabase
 {
     public function testUpdateAccountUnauthenticated()
     {
-        $response = $this->json('PATCH', 'api/accounts/prowectcms-admin-user');
+        $response = $this->json('PATCH', 'api/accounts/10000');
         $response->assertStatus(401);
     }
 
     public function testUpdateAccountUnauthorized()
     {
-        $account = Account::findOrFail('frontend-user');
+        $account = Account::findOrFail(20000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
-        $response = $this->json('PATCH', 'api/accounts/prowectcms-admin-user');
+        $response = $this->json('PATCH', 'api/accounts/10000');
         $response->assertStatus(403);
     }
 
     public function testUpdateAccountSuccess()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
@@ -38,7 +38,7 @@ class UpdateAccountTest extends TestCaseWithDatabase
             ]
         ];
 
-        $response = $this->json('PATCH', 'api/accounts/prowectcms-admin-user', $payload);
+        $response = $this->json('PATCH', 'api/accounts/10000', $payload);
         $response->assertOk();
         $response->assertJson([
            'status' => 'ok',

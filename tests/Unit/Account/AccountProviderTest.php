@@ -26,7 +26,7 @@ class AccountProviderTest extends TestCaseWithDatabase
         $user = $auth->user();
 
         $this->assertInstanceOf(Account::class, $user);
-        $this->assertEquals('prowectcms-admin-user', $user->id);
+        $this->assertEquals(10000, $user->id);
     }
 
     public function testLoginViaEmailWithWrongEmail()
@@ -81,7 +81,7 @@ class AccountProviderTest extends TestCaseWithDatabase
         $user = $auth->user();
 
         $this->assertInstanceOf(Account::class, $user);
-        $this->assertEquals('prowectcms-admin-user', $user->id);
+        $this->assertEquals(10000, $user->id);
     }
 
     public function testLoginViaUsernameWithWrongUsername()
@@ -135,7 +135,7 @@ class AccountProviderTest extends TestCaseWithDatabase
         $user = $auth->user();
 
         $this->assertInstanceOf(Account::class, $user);
-        $this->assertEquals('prowectcms-admin-user', $user->id);
+        $this->assertEquals(10000, $user->id);
     }
 
     public function testLoginViaTokenWithWrongToken()

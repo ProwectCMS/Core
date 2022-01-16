@@ -21,5 +21,7 @@ return array_merge($defaultSettings ,[
     'reactors' => [
         // App\Reactors\YourReactor::class
     ],
-    
+
+    'stored_event_model' => \ProwectCMS\Core\Models\StoredEvent::class,
+    'snapshot_model' => \ProwectCMS\Core\Models\Snapshot::class,
 ]);

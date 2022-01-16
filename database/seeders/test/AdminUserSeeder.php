@@ -26,7 +26,7 @@ class AdminUserSeeder extends Seeder
         $data = [];
 
         $data[] = [
-            'id' => 'prowectcms-admin-user',
+            'id' => 10000,
 
             'attributes' => [
                 'type' => Account::TYPE_USER,

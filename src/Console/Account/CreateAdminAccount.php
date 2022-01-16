@@ -4,12 +4,11 @@ namespace ProwectCMS\Core\Console\Account;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
-use Kra8\Snowflake\Snowflake;
 use ProwectCMS\Core\Commands\Account\CreateAccount;
 use ProwectCMS\Core\Commands\User\CreateUser;
+use ProwectCMS\Core\Facades\Snowflake;
 use ProwectCMS\Core\Models\Account;
 use ProwectCMS\Core\Models\AccountCredential;
-use Ramsey\Uuid\Uuid;
 use Spatie\EventSourcing\Commands\CommandBus;
 
 class CreateAdminAccount extends Command
@@ -19,7 +18,7 @@ class CreateAdminAccount extends Command
     protected $description = 'Creates a new admin user - to be able to login to ProwectCMS Admin';
 
 
-    public function handle(CommandBus $commandBus, Snowflake $snowflake)
+    public function handle(CommandBus $commandBus,)
     {
         $name = $this->ask('Name');
         $email = $this->ask('Email');
@@ -41,12 +40,12 @@ class CreateAdminAccount extends Command
             return 422;
         }
 
-        $userId = $snowflake->next();
+        $userId = Snowflake::next();
         $userAttributes = [
             'name' => $name,
             'email' => $email
         ];
-        $accountUuid = Uuid::uuid4();
+        $accountUuid = Snowflake::next();
         $attributes = [
             'type' => Account::TYPE_USER,
             'user_id' => $userId

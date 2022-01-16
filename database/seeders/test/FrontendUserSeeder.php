@@ -15,7 +15,7 @@ class FrontendUserSeeder extends AdminUserSeeder
         $data = [];
 
         $data[] = [
-            'id' => 'frontend-user',
+            'id' => 20000,
 
             'attributes' => [
                 'type' => Account::TYPE_USER,
@@ -31,7 +31,7 @@ class FrontendUserSeeder extends AdminUserSeeder
         ];
 
         $data[] = [
-            'id' => 'token-user',
+            'id' => 30000,
 
             'attributes' => [
                 'type' => Account::TYPE_USER,

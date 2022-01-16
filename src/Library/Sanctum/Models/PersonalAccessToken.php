@@ -3,7 +3,7 @@
 namespace ProwectCMS\Core\Library\Sanctum\Models;
 
 use Laravel\Sanctum\PersonalAccessToken as BasePersonalAccessToken;
-use Ramsey\Uuid\Uuid;
+use ProwectCMS\Core\Facades\Snowflake;
 
 class PersonalAccessToken extends BasePersonalAccessToken
 {
@@ -17,7 +17,7 @@ class PersonalAccessToken extends BasePersonalAccessToken
 
         static::creating(function($model) {
             if (empty($model->id)) {
-                $model->id = (string)Uuid::uuid4();
+                $model->id = Snowflake::next();
             }
         });
     }

@@ -12,7 +12,7 @@ class DeleteAccountCredentialTest extends TestCaseWithDatabase
 {
     public function testDeleteAccountCredentialUnauthenticated()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
         $accountCredential = $account->credentials()->where('type', AccountCredential::TYPE_TOKEN)->first();
 
         $response = $this->json('DELETE', "api/accounts/$account->id/credentials/token/$accountCredential->id");
@@ -21,11 +21,11 @@ class DeleteAccountCredentialTest extends TestCaseWithDatabase
 
     public function testDeleteAccountCredentialUnauthorized()
     {
-        $account = Account::findOrFail('frontend-user');
+        $account = Account::findOrFail(20000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
         $accountCredential = $account->credentials()->where('type', AccountCredential::TYPE_TOKEN)->first();
 
         $response = $this->json('DELETE', "api/accounts/$account->id/credentials/token/$accountCredential->id");
@@ -34,7 +34,7 @@ class DeleteAccountCredentialTest extends TestCaseWithDatabase
 
     public function testDeleteAccountCredentialTokenSuccess()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
         $accountCredential = $account->credentials()->where('type', AccountCredential::TYPE_TOKEN)->first();
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');

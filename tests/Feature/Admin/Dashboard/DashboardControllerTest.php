@@ -22,7 +22,7 @@ class DashboardControllerTest extends TestCase
     {
         $this->seed(TestSeeder::class);
 
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         $this->actingAs($account, 'prowectcms');
 

@@ -45,7 +45,7 @@ class AuthTest extends TestCaseWithDatabase
 
     public function testGetUserSuccess()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
@@ -59,7 +59,7 @@ class AuthTest extends TestCaseWithDatabase
 
     public function testLogoutSuccess()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 

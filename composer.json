@@ -38,7 +38,10 @@
               "ProwectCMS\\Core\\Providers\\AuthServiceProvider",
               "ProwectCMS\\Core\\Providers\\EventSourcingServiceProvider",
               "ProwectCMS\\Core\\Providers\\SanctumServiceProvider"
-          ]
+          ],
+          "aliases": {
+              "Snowflake": "ProwectCMS\\Core\\Facades\\Snowflake"
+          }
       }
   }
 }

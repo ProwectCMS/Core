@@ -12,7 +12,7 @@ class AccountPolicy
     public function list(Account $currentUser)
     {
         // TODO: only Admins can see user list
-        if ($currentUser->id == 'prowectcms-admin-user') { // TODO: remove this - only hack for unit test
+        if ($currentUser->id == 10000) { // TODO: remove this - only hack for unit test
             return true;
         }
 

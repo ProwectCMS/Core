@@ -16,7 +16,7 @@ class GetAccountTest extends TestCaseWithDatabase
 
     public function testListAccountsUnauthorized()
     {
-        $account = Account::findOrFail('frontend-user');
+        $account = Account::findOrFail(20000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
@@ -26,7 +26,7 @@ class GetAccountTest extends TestCaseWithDatabase
 
     public function testListAccountsSuccess()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
@@ -43,27 +43,27 @@ class GetAccountTest extends TestCaseWithDatabase
 
     public function testShowAccountUnauthenticated()
     {
-        $response = $this->json('GET', 'api/accounts/prowectcms-admin-user');
+        $response = $this->json('GET', 'api/accounts/10000');
         $response->assertStatus(401);
     }
 
     public function testShowAccountUnauthorized()
     {
-        $account = Account::findOrFail('frontend-user');
+        $account = Account::findOrFail(20000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
-        $response = $this->json('GET', 'api/accounts/prowectcms-admin-user');
+        $response = $this->json('GET', 'api/accounts/10000');
         $response->assertStatus(403);
     }
 
     public function testShowAccountSuccess()
     {
-        $account = Account::findOrFail('prowectcms-admin-user');
+        $account = Account::findOrFail(10000);
 
         Sanctum::actingAs($account, ['*'], 'prowectcms_api');
 
-        $response = $this->json('GET', 'api/accounts/prowectcms-admin-user');
+        $response = $this->json('GET', 'api/accounts/10000');
         $response->assertOk();
         $response->assertJson([
             'id' => $account->id
