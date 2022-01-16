@@ -5,6 +5,7 @@ namespace ProwectCMS\Core\Tests\Feature\Account;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use ProwectCMS\Core\Models\Account;
 use ProwectCMS\Core\Models\AccountCredential;
+use ProwectCMS\Core\Models\User;
 use ProwectCMS\Core\Tests\TestCase;
 
 class CreateAdminAccountCommandTest extends TestCase
@@ -14,13 +15,14 @@ class CreateAdminAccountCommandTest extends TestCase
     /**
      * @dataProvider adminAccountSuccessDataProvider
      */
-    public function testCreateAdminAccountSuccess($email, $password)
+    public function testCreateAdminAccountSuccess($name, $email, $password)
     {
         $command = $this->artisan('admin:create');
 
+        $command->expectsQuestion('Name', $name);
         $command->expectsQuestion('Email', $email);
         $command->expectsQuestion('Password', $password);
-        $command->expectsOutput('Admin user: ' . $email . ' has successfully been created.');
+        $command->expectsOutput('Admin user: ' . $name . ' (' . $email . ') has successfully been created.');
         $command->assertExitCode(0);
     }
 
@@ -28,6 +30,7 @@ class CreateAdminAccountCommandTest extends TestCase
     {
         return [
             [
+                'name' => 'Admin',
                 'email' => 'admin@prowect.com',
                 'password' => 'password'
             ]
@@ -37,10 +40,11 @@ class CreateAdminAccountCommandTest extends TestCase
     /**
      * @dataProvider adminAccountFailedDataProvider
      */
-    public function testCreateAdminAccountFailed($email, $password)
+    public function testCreateAdminAccountFailed($name, $email, $password)
     {
         $command = $this->artisan('admin:create');
 
+        $command->expectsQuestion('Name', $name);
         $command->expectsQuestion('Email', $email);
         $command->expectsQuestion('Password', $password);
         $command->assertExitCode(422);
@@ -50,10 +54,12 @@ class CreateAdminAccountCommandTest extends TestCase
     {
         return [
             [
+                'name' => 'Invalid name',
                 'email' => 'not-an-email',
                 'password' => 'password'
             ],
             [
+                'name' => null,
                 'email' => null,
                 'password' => null
             ]

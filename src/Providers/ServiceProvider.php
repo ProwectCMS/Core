@@ -82,10 +82,6 @@ class ServiceProvider extends BaseServiceProvider
 
         // register Projectors within a service provider (instead of settings)
         // Projectionist::addProjector(TransactionCountProjector::class);
-
-        Relation::enforceMorphMap([
-            'account' => Account::class,
-        ]);
     }
 
     public function register()

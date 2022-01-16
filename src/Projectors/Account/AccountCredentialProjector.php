@@ -8,35 +8,37 @@ use ProwectCMS\Core\Events\Account\AccountCredentialCreated;
 use ProwectCMS\Core\Events\Account\AccountCredentialDeleted;
 use ProwectCMS\Core\Events\Account\AccountCredentialUpdated;
 use ProwectCMS\Core\Models\AccountCredential;
+use ProwectCMS\Core\Projectors\EloquentProjector;
 use Ramsey\Uuid\Uuid;
-use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
 
-class AccountCredentialProjector extends Projector
+class AccountCredentialProjector extends EloquentProjector
 {
+    protected function getModelClass()
+    {
+        return AccountCredential::class;
+    }
+
     public function onAccountCreated(AccountCreated $event)
     {
         foreach ($event->credentials as $credential) {
-            $uuid = Uuid::uuid4();
-            AccountCredentialAggregate::retrieve($uuid)->create($event->aggregateRootUuid(), $credential)->persist();
+            AccountCredentialAggregate::retrieve($credential['id'])->create($event->aggregateRootUuid(), $credential)->persist();
         }
     }
 
     public function onAccountCredentialCreated(AccountCredentialCreated $event)
     {
-        $attributes = $event->attributes;
-        $attributes['id'] = $event->aggregateRootUuid();
-        $attributes['account_id'] = $event->accountId;
-
-        AccountCredential::create($attributes);
+        $this->onCreated($event, function($model, $event) {
+           $model->account_id = $event->accountId;
+        });
     }
 
     public function onAccountCredentialUpdated(AccountCredentialUpdated $event)
     {
-        AccountCredential::query()->where('id', $event->aggregateRootUuid())->update($event->attributes);
+        $this->onUpdated($event);
     }
 
     public function onAccountCredentialDeleted(AccountCredentialDeleted $event)
     {
-        AccountCredential::query()->where('id', $event->aggregateRootUuid())->delete();
+        $this->onDeleted($event);
     }
 }

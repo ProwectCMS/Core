@@ -2,6 +2,7 @@
 
 namespace ProwectCMS\Core\Tests;
 
+use Kra8\Snowflake\Providers\LaravelServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use ProwectCMS\Core\Providers\AuthServiceProvider;
 use ProwectCMS\Core\Providers\SanctumServiceProvider;
@@ -23,6 +24,7 @@ class TestCase extends BaseTestCase
             // Other packages
             LaravelSettingsServiceProvider::class,
             EventSourcingServiceProvider::class,
+            LaravelServiceProvider::class,
 
             // ProwectCMS
             ServiceProvider::class,

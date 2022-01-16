@@ -67,6 +67,8 @@ class AuthController extends Controller
     {
         $currentUser = $request->user();
 
+        $currentUser->load('user');
+
         return response()->json($currentUser);
     }
 

@@ -6,25 +6,27 @@ use ProwectCMS\Core\Events\Account\AccountCreated;
 use ProwectCMS\Core\Events\Account\AccountDeleted;
 use ProwectCMS\Core\Events\Account\AccountUpdated;
 use ProwectCMS\Core\Models\Account;
-use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
+use ProwectCMS\Core\Projectors\EloquentProjector;
 
-class AccountProjector extends Projector
+class AccountProjector extends EloquentProjector
 {
+    public function getModelClass()
+    {
+        return Account::class;
+    }
+
     public function onAccountCreated(AccountCreated $event)
     {
-        $attributes = $event->attributes;
-        $attributes['id'] = $event->aggregateRootUuid();
-
-        $account = Account::create($attributes);
+        $this->onCreated($event);
     }
 
     public function onAccountUpdated(AccountUpdated $event)
     {
-        Account::findOrFail($event->aggregateRootUuid())->update($event->attributes);
+        $this->onUpdated($event);
     }
 
     public function onAccountDeleted(AccountDeleted $event)
     {
-        Account::findOrFail($event->aggregateRootUuid())->delete();
+        $this->onDeleted($event);
     }
 }

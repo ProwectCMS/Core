@@ -21,7 +21,7 @@ class Account extends Model implements Authenticatable
     protected static $aggregate = AccountAggregate::class;
 
     protected $fillable = [
-        'id', 'type', 'meta'
+        'id', 'user_id', 'type', 'meta'
     ];
 
     protected $casts = [
@@ -63,5 +63,10 @@ class Account extends Model implements Authenticatable
                 $this->getRememberTokenName() => $value
             ]);
         }
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

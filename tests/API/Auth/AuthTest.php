@@ -54,7 +54,7 @@ class AuthTest extends TestCaseWithDatabase
         $response->assertJson([
             'id' => $account->id
         ]);
-        $response->assertJsonStructure(['id', 'type', 'meta', 'created_at', 'updated_at', 'deleted_at']);
+        $response->assertJsonStructure(['id', 'type', 'meta', 'created_at', 'updated_at', 'deleted_at', 'user']);
     }
 
     public function testLogoutSuccess()

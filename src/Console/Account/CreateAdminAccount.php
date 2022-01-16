@@ -4,7 +4,9 @@ namespace ProwectCMS\Core\Console\Account;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
+use Kra8\Snowflake\Snowflake;
 use ProwectCMS\Core\Commands\Account\CreateAccount;
+use ProwectCMS\Core\Commands\User\CreateUser;
 use ProwectCMS\Core\Models\Account;
 use ProwectCMS\Core\Models\AccountCredential;
 use Ramsey\Uuid\Uuid;
@@ -17,15 +19,18 @@ class CreateAdminAccount extends Command
     protected $description = 'Creates a new admin user - to be able to login to ProwectCMS Admin';
 
 
-    public function handle(CommandBus $commandBus)
+    public function handle(CommandBus $commandBus, Snowflake $snowflake)
     {
+        $name = $this->ask('Name');
         $email = $this->ask('Email');
         $password = $this->secret('Password');
 
         $validator = Validator::make([
+            'name' => $name,
             'email' => $email,
             'password' => $password
         ], [
+            'name' => 'required|filled',
             'email' => 'required|filled|email|unique:account_credentials,username',
             'password' => 'required|filled'
         ]);
@@ -36,9 +41,15 @@ class CreateAdminAccount extends Command
             return 422;
         }
 
+        $userId = $snowflake->next();
+        $userAttributes = [
+            'name' => $name,
+            'email' => $email
+        ];
         $accountUuid = Uuid::uuid4();
         $attributes = [
-            'type' => Account::TYPE_USER
+            'type' => Account::TYPE_USER,
+            'user_id' => $userId
         ];
         $credentials = [
             [
@@ -48,8 +59,9 @@ class CreateAdminAccount extends Command
             ]
         ];
 
+        $commandBus->dispatch(new CreateUser($userId, $userAttributes));
         $commandBus->dispatch(new CreateAccount($accountUuid, $attributes, $credentials));
 
-        $this->info('Admin user: ' . $email . ' has successfully been created.');
+        $this->info('Admin user: ' . $name . ' (' . $email . ') has successfully been created.');
     }
 }
